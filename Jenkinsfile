@@ -1,49 +1,45 @@
+
 pipeline {
     agent any
-    
-    
-    // Use tools Name configured in Jenkins
+
     tools {
         jdk 'JDK 25'
-        maven 'Maven-3.10'
+        maven 'Maven'
     }
 
-
     stages {
-        stage('SCM Synchronization') {
+        stage('Checkout') {
             steps {
-                echo '📥 Pulling latest code changes from Git repository...'
-                checkout scm
+                git branch: 'main',
+                    url: 'https://github.com/Abhigna23/simple-calculator-jenkins.git'
             }
         }
 
-        stage('Static Verification') {
+        stage('Build') {
             steps {
-                echo '🔍 Checking Maven project layout rules...'
-                bat 'mvn validate'
+                bat 'mvn clean compile'
             }
         }
 
-        stage('Compilation & Automated Testing') {
+        stage('Test') {
             steps {
-                echo '⚙️ Compiling class layers and verifying test logic stability...'
-                bat 'mvn clean package'
+                bat 'mvn test'
             }
-            post {
-                always {
-                    echo '📊 Publishing Unit Test trends to Jenkins Dashboard...'
-                    junit '**/target/surefire-reports/*.xml'
-                }
+        }
+
+        stage('Package') {
+            steps {
+                bat 'mvn package'
             }
         }
     }
 
     post {
         success {
-            echo '✅ CI Pipeline completed flawlessly! Code stability confirmed.'
+            echo 'Build and tests completed successfully!'
         }
         failure {
-            echo '❌ CI Pipeline broken. Check console logs for build failures or breaking test regressions.'
+            echo 'Pipeline failed. Check the console output.'
         }
     }
 }
