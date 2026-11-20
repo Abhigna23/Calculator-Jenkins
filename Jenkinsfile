@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Abhigna23/simple-calculator-jenkins.git'
+                    url: url: 'https://github.com/Abhigna23/Calculator-Jenkins.git'
             }
         }
 
