@@ -7,13 +7,7 @@ pipeline {
         maven 'Maven'
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    url: url: 'https://github.com/Abhigna23/Calculator-Jenkins.git'
-            }
-        }
+    
 
         stage('Build') {
             steps {
